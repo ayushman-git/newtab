@@ -1,28 +1,55 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Background :gradient="selectedGradient" />
+    <div class="color-selector-container">
+      <BackgroundColor :selectedGradient="selectedGradient" v-on:selectcolor="changeGradient" class="color-selector" />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Background from "./components/Background";
+import BackgroundColor from "./components/BackgroundColor";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
+    Background,
+    BackgroundColor,
+  },
+  data() {
+    return {
+      selectedGradient: {
+        start: "#222222",
+        end: "#000000",
+      },
+    };
+  },
+  methods: {
+    changeGradient(a) {
+      this.selectedGradient = a;
+    }
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.color-selector-container {
+  padding-top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  bottom: -130px;
+  transition: 0.2s bottom cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.color-selector-container:hover {
+  bottom: -60px;
 }
 </style>
