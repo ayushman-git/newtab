@@ -45,6 +45,7 @@ export default {
   justify-content: space-evenly;
 }
 .gradient-circle {
+  cursor: pointer;
   width: 56px;
   height: 56px;
   border-radius: 50%;

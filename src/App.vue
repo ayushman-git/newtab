@@ -1,8 +1,13 @@
 <template>
   <div id="app">
+    <Weather class="weather" />
     <Background :gradient="selectedGradient" />
     <div class="color-selector-container">
-      <BackgroundColor :selectedGradient="selectedGradient" v-on:selectcolor="changeGradient" class="color-selector" />
+      <BackgroundColor
+        :selectedGradient="selectedGradient"
+        v-on:selectcolor="changeGradient"
+        class="color-selector"
+      />
     </div>
   </div>
 </template>
@@ -10,31 +15,49 @@
 <script>
 import Background from "./components/Background";
 import BackgroundColor from "./components/BackgroundColor";
+import Weather from "./components/Weather";
 export default {
   name: "App",
   components: {
     Background,
     BackgroundColor,
+    Weather
+  },
+  created() {
+    const notFirstTime = !!(localStorage.getItem("gradient"));
+    if (notFirstTime) {
+      this.selectedGradient = JSON.parse(localStorage.getItem("gradient"));
+    } else {
+      this.selectedGradient = {
+        start: "#222222",
+        end: "#000000",
+      };
+    }
   },
   data() {
     return {
-      selectedGradient: {
-        start: "#222222",
-        end: "#000000",
-      },
+      selectedGradient: null,
     };
   },
   methods: {
     changeGradient(a) {
       this.selectedGradient = a;
-    }
-  }
+      localStorage.setItem("gradient", JSON.stringify(this.selectedGradient));
+    },
+  },
 };
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap');
 * {
   box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+.weather {
+  position: absolute;
+  top: 25px;
+  left: 25px;
 }
 body {
   margin: 0;
