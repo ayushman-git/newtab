@@ -1,8 +1,22 @@
 <template>
-  <div id="app">
-    <Background :gradient="selectedGradient" />
+  <div
+    id="app"
+    :style="{
+      background: `linear-gradient(180deg, ${selectedGradient.start}, ${selectedGradient.end}`,
+    }"
+  >
     <Weather class="weather" />
     <Information class="information" />
+    <div class="website-module-container">
+      <WebsiteModule :websiteObj="websiteObj" />
+      <WebsiteModule :websiteObj="websiteObj" />
+      <WebsiteModule :websiteObj="websiteObj" />
+      <WebsiteModule :websiteObj="websiteObj" />
+      <WebsiteModule :websiteObj="websiteObj" />
+      <WebsiteModule :websiteObj="websiteObj" />
+      <WebsiteModule :websiteObj="websiteObj" />
+      <WebsiteModule :websiteObj="websiteObj" />
+    </div>
     <div class="color-selector-container">
       <BackgroundColor
         :selectedGradient="selectedGradient"
@@ -14,20 +28,20 @@
 </template>
 
 <script>
-import Background from "./components/Background";
 import BackgroundColor from "./components/BackgroundColor";
 import Weather from "./components/Weather";
-import Information from "./components/Information"
+import Information from "./components/Information";
+import WebsiteModule from "./components/WebsiteModule";
 export default {
   name: "App",
   components: {
-    Background,
     BackgroundColor,
     Weather,
-    Information
+    Information,
+    WebsiteModule,
   },
   created() {
-    const notFirstTime = !!(localStorage.getItem("gradient"));
+    const notFirstTime = !!localStorage.getItem("gradient");
     if (notFirstTime) {
       this.selectedGradient = JSON.parse(localStorage.getItem("gradient"));
     } else {
@@ -36,10 +50,16 @@ export default {
         end: "#000000",
       };
     }
+    console.log(this.selectedGradient)
   },
   data() {
     return {
       selectedGradient: null,
+      websiteObj: {
+        title: "Youtube",
+        icon: "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
+        link: "https://www.youtube.com",
+      },
     };
   },
   methods: {
@@ -52,21 +72,23 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap");
 * {
   box-sizing: border-box;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
+}
+#app {
+  width: 100%;
+  height: 100vh;
 }
 .weather {
-  position: absolute;
+  position: fixed;
   top: 25px;
   left: 25px;
 }
 .information {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 20%;
+  margin: 0 auto;
+  padding: 20vh 1em 4em 1em;
 }
 body {
   margin: 0;
@@ -77,11 +99,20 @@ body {
   padding-top: 50px;
   left: 50%;
   transform: translateX(-50%);
-  position: absolute;
+  position: fixed;
   bottom: -130px;
   transition: 0.2s bottom cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 .color-selector-container:hover {
   bottom: -60px;
+}
+.website-module-container {
+  width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
 }
 </style>

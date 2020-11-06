@@ -46,7 +46,6 @@ export default {
 <style scoped>
 .info-container {
   cursor: pointer;
-  padding: 1em;
 }
 .container {
   color: white;
