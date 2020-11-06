@@ -5,11 +5,11 @@
     v-if="weatherData"
   >
     <transition name="slide-fade">
-      <p v-if="showMetric">{{ (weatherData.main.temp - 273).toFixed(2) }}° c</p>
+      <p v-if="showMetric">{{ Math.round(weatherData.main.temp - 273) }}° c</p>
     </transition>
     <transition name="slide-fade">
       <p v-if="!showMetric">
-        {{ ((weatherData.main.temp * 9) / 5 - 459.67).toFixed(2) }}° f
+        {{ Math.round((weatherData.main.temp * 9) / 5 - 459.67) }}° f
       </p>
     </transition>
     <div class="vertical-divider"></div>

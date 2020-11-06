@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    <Weather class="weather" />
     <Background :gradient="selectedGradient" />
+    <Weather class="weather" />
+    <Information class="information" />
     <div class="color-selector-container">
       <BackgroundColor
         :selectedGradient="selectedGradient"
@@ -16,12 +17,14 @@
 import Background from "./components/Background";
 import BackgroundColor from "./components/BackgroundColor";
 import Weather from "./components/Weather";
+import Information from "./components/Information"
 export default {
   name: "App",
   components: {
     Background,
     BackgroundColor,
-    Weather
+    Weather,
+    Information
   },
   created() {
     const notFirstTime = !!(localStorage.getItem("gradient"));
@@ -58,6 +61,12 @@ export default {
   position: absolute;
   top: 25px;
   left: 25px;
+}
+.information {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 20%;
 }
 body {
   margin: 0;
