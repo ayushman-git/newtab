@@ -13,9 +13,6 @@ export default {
       type: Object,
     },
   },
-  mounted() {
-    console.log(this.websiteObj);
-  },
   methods: {
     goToLink() {
       window.open(this.websiteObj.link, "_blank");
@@ -43,7 +40,7 @@ export default {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
 }
 .website-container:hover img {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 img {
   width: 50px;

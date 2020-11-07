@@ -50,7 +50,6 @@ export default {
         end: "#000000",
       };
     }
-    console.log(this.selectedGradient)
   },
   data() {
     return {

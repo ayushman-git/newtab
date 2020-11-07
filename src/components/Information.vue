@@ -1,12 +1,11 @@
 <template>
   <transition name="author-transition">
-    <div
-    class="info-container"
-      @mouseenter="showAuthor = true"
-      @mouseleave="showAuthor = false"
-      v-if="qod"
-    >
-      <div class="container">
+    <div class="info-container" v-if="qod">
+      <div
+        class="container"
+        @mouseenter="showAuthor = true"
+        @mouseleave="showAuthor = false"
+      >
         <b>&#8220; </b>
         <span>{{ qod }}</span>
         <b> &#8221;</b>
@@ -45,12 +44,15 @@ export default {
 
 <style scoped>
 .info-container {
-  cursor: pointer;
+  display: flex;
+  justify-content: center;
 }
 .container {
   color: white;
   font-size: 18px;
   text-align: center;
+  cursor: pointer;
+  display: inline;
 }
 
 span {
