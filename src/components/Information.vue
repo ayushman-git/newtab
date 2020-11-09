@@ -51,7 +51,7 @@ export default {
   color: white;
   font-size: 18px;
   text-align: center;
-  cursor: pointer;
+  cursor: default;
   display: inline;
 }
 

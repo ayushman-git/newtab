@@ -8,14 +8,11 @@
     <Weather class="weather" />
     <Information class="information" />
     <div class="website-module-container">
-      <WebsiteModule :websiteObj="websiteObj" />
-      <WebsiteModule :websiteObj="websiteObj" />
-      <WebsiteModule :websiteObj="websiteObj" />
-      <WebsiteModule :websiteObj="websiteObj" />
-      <WebsiteModule :websiteObj="websiteObj" />
-      <WebsiteModule :websiteObj="websiteObj" />
-      <WebsiteModule :websiteObj="websiteObj" />
-      <WebsiteModule :websiteObj="websiteObj" />
+      <WebsiteModule
+      v-for="(item, index) in initialWebsites" :key="index"
+        :selectedGradient="selectedGradient"
+        :websiteObj="item"
+      />
     </div>
     <div class="color-selector-container">
       <BackgroundColor
@@ -54,11 +51,76 @@ export default {
   data() {
     return {
       selectedGradient: null,
-      websiteObj: {
+      initialWebsites: [
+        {
         title: "Youtube",
         icon: "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
         link: "https://www.youtube.com",
       },
+        {
+          title: "Facebook",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
+          link: "https://www.facebook.com",
+        },
+        {
+          title: "Twitter",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
+          link: "https://www.twitter.com",
+        },
+        {
+        title: "Gmail",
+        icon: "https://www.flaticon.com/svg/static/icons/svg/732/732200.svg",
+        link: "https://www.gmail.com",
+      },
+        {
+          title: "Facebook",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
+          link: "https://www.facebook.com",
+        },
+        {
+          title: "Twitter",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
+          link: "https://www.twitter.com",
+        },
+        {
+        title: "Youtube",
+        icon: "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
+        link: "https://www.youtube.com",
+      },
+        {
+          title: "Facebook",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
+          link: "https://www.facebook.com",
+        },
+        {
+          title: "Twitter",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
+          link: "https://www.twitter.com",
+        },
+        {
+        title: "Youtube",
+        icon: "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
+        link: "https://www.youtube.com",
+      },
+        {
+          title: "Facebook",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
+          link: "https://www.facebook.com",
+        },
+        {
+          title: "Twitter",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
+          link: "https://www.twitter.com",
+        },
+      ],
     };
   },
   methods: {
@@ -106,12 +168,12 @@ body {
   bottom: -60px;
 }
 .website-module-container {
-  width: 80%;
+  width: 70%;
   position: relative;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-evenly;
+  display: grid;
+  grid-gap: 1em;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 160px));
 }
 </style>
