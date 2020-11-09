@@ -9,9 +9,14 @@
     <Information class="information" />
     <div class="website-module-container">
       <WebsiteModule
-      v-for="(item, index) in initialWebsites" :key="index"
+        v-for="(item, index) in initialWebsites"
+        :key="index"
         :selectedGradient="selectedGradient"
         :websiteObj="item"
+      />
+      <WebsiteModule
+        v-on:modalClicked="showModal = true"
+        :selectedGradient="selectedGradient"
       />
     </div>
     <div class="color-selector-container">
@@ -21,6 +26,16 @@
         class="color-selector"
       />
     </div>
+    <transition name="input-anim">
+      <InpputModal
+        v-if="showModal"
+        class="input-modal"
+        :selectedGradient="selectedGradient"
+      />
+    </transition>
+    <transition name="input-anim">
+      <div @click="showModal = false" v-if="showModal" class="modal-bg"></div>
+    </transition>
   </div>
 </template>
 
@@ -29,6 +44,7 @@ import BackgroundColor from "./components/BackgroundColor";
 import Weather from "./components/Weather";
 import Information from "./components/Information";
 import WebsiteModule from "./components/WebsiteModule";
+import InpputModal from "./components/InputModal";
 export default {
   name: "App",
   components: {
@@ -36,6 +52,7 @@ export default {
     Weather,
     Information,
     WebsiteModule,
+    InpputModal,
   },
   created() {
     const notFirstTime = !!localStorage.getItem("gradient");
@@ -51,74 +68,65 @@ export default {
   data() {
     return {
       selectedGradient: null,
+      showModal: false,
       initialWebsites: [
         {
-        title: "Youtube",
-        icon: "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
-        link: "https://www.youtube.com",
-      },
+          title: "Youtube",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
+          link: "https://www.youtube.com",
+        },
         {
           title: "Facebook",
-          icon:
-            "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
+          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
           link: "https://www.facebook.com",
         },
         {
           title: "Twitter",
-          icon:
-            "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
+          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
           link: "https://www.twitter.com",
         },
         {
-        title: "Gmail",
-        icon: "https://www.flaticon.com/svg/static/icons/svg/732/732200.svg",
-        link: "https://www.gmail.com",
-      },
+          title: "Gmail",
+          icon: "https://www.flaticon.com/svg/static/icons/svg/732/732200.svg",
+          link: "https://www.gmail.com",
+        },
         {
           title: "Facebook",
-          icon:
-            "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
+          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
           link: "https://www.facebook.com",
         },
         {
           title: "Twitter",
-          icon:
-            "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
+          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
           link: "https://www.twitter.com",
         },
         {
-        title: "Youtube",
-        icon: "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
-        link: "https://www.youtube.com",
-      },
+          title: "Youtube",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
+          link: "https://www.youtube.com",
+        },
         {
           title: "Facebook",
-          icon:
-            "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
+          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
           link: "https://www.facebook.com",
         },
         {
           title: "Twitter",
-          icon:
-            "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
+          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
           link: "https://www.twitter.com",
         },
         {
-        title: "Youtube",
-        icon: "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
-        link: "https://www.youtube.com",
-      },
+          title: "Youtube",
+          icon:
+            "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
+          link: "https://www.youtube.com",
+        },
         {
           title: "Facebook",
-          icon:
-            "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
+          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
           link: "https://www.facebook.com",
-        },
-        {
-          title: "Twitter",
-          icon:
-            "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
-          link: "https://www.twitter.com",
         },
       ],
     };
@@ -127,6 +135,9 @@ export default {
     changeGradient(a) {
       this.selectedGradient = a;
       localStorage.setItem("gradient", JSON.stringify(this.selectedGradient));
+    },
+    runFunc() {
+      console.log("C");
     },
   },
 };
@@ -175,5 +186,34 @@ body {
   display: grid;
   grid-gap: 1em;
   grid-template-columns: repeat(auto-fit, minmax(120px, 160px));
+}
+.website-add {
+  width: 50px;
+  height: 50px;
+}
+.input-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 40px;
+}
+.modal-bg {
+  z-index: 5;
+  backdrop-filter: blur(50px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.input-anim-enter-active,
+.input-anim-leave-active {
+  transition: all 0.2s ease;
+}
+.input-anim-enter,
+.input-anim-leave-to {
+  opacity: 0;
 }
 </style>

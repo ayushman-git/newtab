@@ -1,15 +1,31 @@
 <template>
   <div
+    @click="emitModal"
     class="website-container"
+    :style="[!websiteObj ? { 'align-items': 'center' } : {}]"
     @mouseenter="showCloseFunc"
     @mouseleave="[(showClose = false), preventShowCloseFunc()]"
   >
-    <div class="content-container" @click="goToLink">
+    <div v-if="websiteObj" class="content-container" @click="goToLink">
       <img :src="websiteObj.icon" />
       <p>{{ websiteObj.title }}</p>
     </div>
+    <div class="content-container" v-if="!websiteObj">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="50"
+        viewBox="0 0 24 24"
+        width="50"
+      >
+        <path d="M0 0h24v24H0z" fill="none" />
+        <path
+          :fill="selectedGradient.start"
+          d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"
+        />
+      </svg>
+    </div>
     <transition name="close-anim">
-      <div v-if="showClose" class="close">
+      <div v-if="showClose && websiteObj" class="close">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="24"
@@ -54,6 +70,11 @@ export default {
     },
     preventShowCloseFunc() {
       clearTimeout(this.tm);
+    },
+    emitModal() {
+      if(!this.websiteObj) {
+        this.$emit('modalClicked')
+      }
     },
   },
 };
