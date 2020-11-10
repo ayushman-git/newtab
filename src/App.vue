@@ -7,18 +7,24 @@
   >
     <Weather class="weather" />
     <Information class="information" />
-    <div class="website-module-container">
+    <transition-group
+      name="website-anim"
+      class="website-module-container"
+      tag="div"
+    >
       <WebsiteModule
         v-for="(item, index) in initialWebsites"
         :key="index"
         :selectedGradient="selectedGradient"
         :websiteObj="item"
+        v-on:remove="removeWebsite"
       />
       <WebsiteModule
         v-on:modalClicked="showModal = true"
+        :key="99"
         :selectedGradient="selectedGradient"
       />
-    </div>
+    </transition-group>
     <div class="color-selector-container">
       <BackgroundColor
         :selectedGradient="selectedGradient"
@@ -28,9 +34,11 @@
     </div>
     <transition name="input-anim">
       <InpputModal
-        v-if="showModal"
+        v-on:addWebsite="addWebsite"
+        v-show="showModal"
         class="input-modal"
         :selectedGradient="selectedGradient"
+        v-on:closeModal="showModal = false"
       />
     </transition>
     <transition name="input-anim">
@@ -91,43 +99,6 @@ export default {
           icon: "https://www.flaticon.com/svg/static/icons/svg/732/732200.svg",
           link: "https://www.gmail.com",
         },
-        {
-          title: "Facebook",
-          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
-          link: "https://www.facebook.com",
-        },
-        {
-          title: "Twitter",
-          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
-          link: "https://www.twitter.com",
-        },
-        {
-          title: "Youtube",
-          icon:
-            "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
-          link: "https://www.youtube.com",
-        },
-        {
-          title: "Facebook",
-          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
-          link: "https://www.facebook.com",
-        },
-        {
-          title: "Twitter",
-          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
-          link: "https://www.twitter.com",
-        },
-        {
-          title: "Youtube",
-          icon:
-            "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
-          link: "https://www.youtube.com",
-        },
-        {
-          title: "Facebook",
-          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
-          link: "https://www.facebook.com",
-        },
       ],
     };
   },
@@ -136,9 +107,23 @@ export default {
       this.selectedGradient = a;
       localStorage.setItem("gradient", JSON.stringify(this.selectedGradient));
     },
-    runFunc() {
-      console.log("C");
+    addWebsite(iconURLs, url) {
+      const webName = url.replace(/.+\/\/|www.|\..+/g, "");
+      const webNameCaps = webName.charAt(0).toUpperCase() + webName.slice(1);
+      const webObj = {
+        title: webNameCaps,
+        icon:
+          iconURLs[iconURLs.length - 2].url ||
+          iconURLs[iconURLs.length - 1].url,
+        link: url,
+      };
+      this.initialWebsites.push(webObj);
+      console.log(iconURLs);
+      console.log(webObj);
     },
+    removeWebsite(deleteThisWebsite) {
+      console.log(deleteThisWebsite);
+    }
   },
 };
 </script>
@@ -214,6 +199,16 @@ body {
 }
 .input-anim-enter,
 .input-anim-leave-to {
+  opacity: 0;
+}
+
+.website-anim-enter-active,
+.website-anim-leave-active {
+  transition: all 0.4s ease;
+}
+.website-anim-enter,
+.website-anim-leave-to {
+  transform: scale(0.5);
   opacity: 0;
 }
 </style>

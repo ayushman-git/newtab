@@ -3,11 +3,15 @@
     <strong>Enter Website URL</strong>
     <div class="input-set">
       <input
+        v-model="url"
         ref="inp"
         type="text"
         :style="{ 'background-color': selectedGradient.start }"
       />
-      <button :style="{ 'background-color': selectedGradient.start }">
+      <button
+        @click="fetchIcons"
+        :style="{ 'background-color': selectedGradient.start }"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="50"
@@ -23,6 +27,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "InputModal",
   props: {
@@ -30,8 +35,34 @@ export default {
       type: Object,
     },
   },
+  data() {
+    return {
+      url: "",
+    };
+  },
   mounted() {
     this.$refs.inp.focus();
+  },
+  methods: {
+    fetchIcons() {
+      this.$emit("closeModal");
+      axios
+        .post(
+          "https://logo-scraping-api.herokuapp.com/url",
+          {
+            url: this.url,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          this.$emit("addWebsite", res.data, this.url);
+          this.url = "";
+        });
+    },
   },
 };
 </script>

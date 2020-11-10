@@ -25,7 +25,7 @@
       </svg>
     </div>
     <transition name="close-anim">
-      <div v-if="showClose && websiteObj" class="close">
+      <div @click="removeWebsite" v-if="showClose && websiteObj" class="close">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="24"
@@ -76,6 +76,9 @@ export default {
         this.$emit('modalClicked')
       }
     },
+    removeWebsite() {
+      this.$emit('remove', this.websiteObj)
+    }
   },
 };
 </script>
