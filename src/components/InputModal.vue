@@ -7,6 +7,7 @@
         ref="inp"
         type="text"
         :style="{ 'background-color': selectedGradient.start }"
+        @keyup.enter="fetchIcons"
       />
       <button
         @click="fetchIcons"

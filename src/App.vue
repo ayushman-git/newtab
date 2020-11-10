@@ -33,7 +33,7 @@
       />
     </div>
     <transition name="input-anim">
-      <InpputModal
+      <InputModal
         v-on:addWebsite="addWebsite"
         v-show="showModal"
         class="input-modal"
@@ -52,7 +52,7 @@ import BackgroundColor from "./components/BackgroundColor";
 import Weather from "./components/Weather";
 import Information from "./components/Information";
 import WebsiteModule from "./components/WebsiteModule";
-import InpputModal from "./components/InputModal";
+import InputModal from "./components/InputModal";
 export default {
   name: "App",
   components: {
@@ -60,10 +60,11 @@ export default {
     Weather,
     Information,
     WebsiteModule,
-    InpputModal,
+    InputModal,
   },
   created() {
     const notFirstTime = !!localStorage.getItem("gradient");
+    const notFirstTimeWebsite = !!localStorage.getItem("websites");
     if (notFirstTime) {
       this.selectedGradient = JSON.parse(localStorage.getItem("gradient"));
     } else {
@@ -72,12 +73,10 @@ export default {
         end: "#000000",
       };
     }
-  },
-  data() {
-    return {
-      selectedGradient: null,
-      showModal: false,
-      initialWebsites: [
+    if (notFirstTimeWebsite) {
+      this.initialWebsites = JSON.parse(localStorage.getItem("websites"));
+    } else {
+      this.initialWebsites = [
         {
           title: "Youtube",
           icon:
@@ -99,7 +98,14 @@ export default {
           icon: "https://www.flaticon.com/svg/static/icons/svg/732/732200.svg",
           link: "https://www.gmail.com",
         },
-      ],
+      ];
+    }
+  },
+  data() {
+    return {
+      selectedGradient: null,
+      showModal: false,
+      initialWebsites: null,
     };
   },
   methods: {
@@ -123,7 +129,7 @@ export default {
     },
     removeWebsite(deleteThisWebsite) {
       console.log(deleteThisWebsite);
-    }
+    },
   },
 };
 </script>

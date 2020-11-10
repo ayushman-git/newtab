@@ -6,10 +6,10 @@
     @mouseenter="showCloseFunc"
     @mouseleave="[(showClose = false), preventShowCloseFunc()]"
   >
-    <div v-if="websiteObj" class="content-container" @click="goToLink">
+    <a :href="websiteObj.link" v-if="websiteObj" class="content-container">
       <img :src="websiteObj.icon" />
       <p>{{ websiteObj.title }}</p>
-    </div>
+    </a>
     <div class="content-container" v-if="!websiteObj">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -60,9 +60,6 @@ export default {
     };
   },
   methods: {
-    goToLink() {
-      window.open(this.websiteObj.link, "_blank");
-    },
     showCloseFunc() {
       this.tm = setTimeout(() => {
         this.showClose = true;
@@ -72,18 +69,27 @@ export default {
       clearTimeout(this.tm);
     },
     emitModal() {
-      if(!this.websiteObj) {
-        this.$emit('modalClicked')
+      if (!this.websiteObj) {
+        this.$emit("modalClicked");
       }
     },
     removeWebsite() {
-      this.$emit('remove', this.websiteObj)
-    }
+      this.$emit("remove", this.websiteObj);
+    },
   },
 };
 </script>
 
 <style scoped>
+a {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
+}
+.link-container {
+  display: block;
+}
 .content-container {
   width: 100%;
   display: flex;
