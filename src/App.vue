@@ -64,7 +64,7 @@ export default {
   },
   created() {
     const notFirstTime = !!localStorage.getItem("gradient");
-    const notFirstTimeWebsite = !!localStorage.getItem("websites");
+    const notFirstTimeWebsite = !!localStorage.getItem("initialWebsites");
     if (notFirstTime) {
       this.selectedGradient = JSON.parse(localStorage.getItem("gradient"));
     } else {
@@ -74,7 +74,9 @@ export default {
       };
     }
     if (notFirstTimeWebsite) {
-      this.initialWebsites = JSON.parse(localStorage.getItem("websites"));
+      this.initialWebsites = JSON.parse(
+        localStorage.getItem("initialWebsites")
+      );
     } else {
       this.initialWebsites = [
         {
@@ -114,21 +116,28 @@ export default {
       localStorage.setItem("gradient", JSON.stringify(this.selectedGradient));
     },
     addWebsite(iconURLs, url) {
+      console.log(iconURLs);
       const webName = url.replace(/.+\/\/|www.|\..+/g, "");
       const webNameCaps = webName.charAt(0).toUpperCase() + webName.slice(1);
       const webObj = {
         title: webNameCaps,
-        icon:
-          iconURLs[iconURLs.length - 2].url ||
-          iconURLs[iconURLs.length - 1].url,
+        icon: iconURLs,
         link: url,
       };
       this.initialWebsites.push(webObj);
-      console.log(iconURLs);
-      console.log(webObj);
+      localStorage.setItem(
+        "initialWebsites",
+        JSON.stringify(this.initialWebsites)
+      );
     },
     removeWebsite(deleteThisWebsite) {
-      console.log(deleteThisWebsite);
+      this.initialWebsites = this.initialWebsites.filter((site) => {
+        return JSON.stringify(site) != JSON.stringify(deleteThisWebsite);
+      });
+      localStorage.setItem(
+        "initialWebsites",
+        JSON.stringify(this.initialWebsites)
+      );
     },
   },
 };

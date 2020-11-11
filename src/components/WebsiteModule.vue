@@ -117,7 +117,8 @@ a:active {
   transform: scale(1.05);
 }
 img {
-  height: 30px;
+  max-height: 30px;
+  max-width: 80px;
   transition: 0.2s all cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
