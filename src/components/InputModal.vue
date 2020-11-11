@@ -28,7 +28,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 export default {
   name: "InputModal",
   props: {
@@ -47,23 +47,34 @@ export default {
   methods: {
     fetchIcons() {
       this.$emit("closeModal");
-      // axios
-      //   .post(
-      //     "https://logo-scraping-api.herokuapp.com/url",
-      //     {
-      //       url: this.url,
-      //     },
-      //     {
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //       },
-      //     }
-      //   )
-      //   .then((res) => {
-      //     this.$emit("addWebsite", res.data, this.url);
-      //     this.url = "";
-      //   });
-      this.$emit("addWebsite", "https://logo.clearbit.com/" + this.url, this.url);
+      this.$emit(
+        "addWebsite",
+        "https://logo.clearbit.com/" + this.url,
+        this.url
+      );
+      this.fetchIconsFromAPI();
+    },
+    fetchIconsFromAPI() {
+      axios
+        .post(
+          "https://logo-scraping-api.herokuapp.com/url",
+          {
+            url: this.url,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((res) => {
+          this.$emit(
+            "addMoreIcons",
+            res.data.map((singleUrlObj) => {
+              return singleUrlObj.url;
+            },)
+          );
+        });
     },
   },
 };

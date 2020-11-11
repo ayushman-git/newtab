@@ -18,6 +18,7 @@
         :selectedGradient="selectedGradient"
         :websiteObj="item"
         v-on:remove="removeWebsite"
+        v-on:refresh="refresh"
       />
       <WebsiteModule
         v-on:modalClicked="showModal = true"
@@ -39,6 +40,7 @@
         class="input-modal"
         :selectedGradient="selectedGradient"
         v-on:closeModal="showModal = false"
+        v-on:addMoreIcons="addMoreIcons"
       />
     </transition>
     <transition name="input-anim">
@@ -81,24 +83,28 @@ export default {
       this.initialWebsites = [
         {
           title: "Youtube",
-          icon:
+          icons: [
             "https://www.flaticon.com/svg/static/icons/svg/1384/1384060.svg",
+            "https://i.pinimg.com/originals/0b/20/04/0b2004499710b7b222644edaa60f7711.png",
+          ],
+          selectedIconIndex: 0,
           link: "https://www.youtube.com",
         },
         {
           title: "Facebook",
-          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
+          icons: [
+            "https://www.flaticon.com/svg/static/icons/svg/733/733549.svg",
+          ],
+          selectedIconIndex: 0,
           link: "https://www.facebook.com",
         },
         {
           title: "Twitter",
-          icon: "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
+          icons: [
+            "https://www.flaticon.com/svg/static/icons/svg/733/733579.svg",
+          ],
+          selectedIconIndex: 0,
           link: "https://www.twitter.com",
-        },
-        {
-          title: "Gmail",
-          icon: "https://www.flaticon.com/svg/static/icons/svg/732/732200.svg",
-          link: "https://www.gmail.com",
         },
       ];
     }
@@ -116,12 +122,12 @@ export default {
       localStorage.setItem("gradient", JSON.stringify(this.selectedGradient));
     },
     addWebsite(iconURLs, url) {
-      console.log(iconURLs);
       const webName = url.replace(/.+\/\/|www.|\..+/g, "");
       const webNameCaps = webName.charAt(0).toUpperCase() + webName.slice(1);
       const webObj = {
         title: webNameCaps,
-        icon: iconURLs,
+        icons: [iconURLs],
+        selectedIconIndex: 0,
         link: url,
       };
       this.initialWebsites.push(webObj);
@@ -134,6 +140,30 @@ export default {
       this.initialWebsites = this.initialWebsites.filter((site) => {
         return JSON.stringify(site) != JSON.stringify(deleteThisWebsite);
       });
+      localStorage.setItem(
+        "initialWebsites",
+        JSON.stringify(this.initialWebsites)
+      );
+    },
+    refresh(changedIndex) {
+      this.initialWebsites.forEach((site) => {
+        if (JSON.stringify(site) === JSON.stringify(changedIndex)) {
+          if (site.icons.length - 1 === site.selectedIconIndex) {
+            site.selectedIconIndex = 0;
+          } else {
+            site.selectedIconIndex++;
+          }
+        }
+      });
+      localStorage.setItem(
+        "initialWebsites",
+        JSON.stringify(this.initialWebsites)
+      );
+    },
+    addMoreIcons(moreIcons) {
+      this.initialWebsites[this.initialWebsites.length - 1].icons.push(
+        ...moreIcons
+      );
       localStorage.setItem(
         "initialWebsites",
         JSON.stringify(this.initialWebsites)

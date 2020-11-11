@@ -7,7 +7,7 @@
     @mouseleave="[(showClose = false), preventShowCloseFunc()]"
   >
     <a :href="websiteObj.link" v-if="websiteObj" class="content-container">
-      <img :src="websiteObj.icon" />
+      <img :src="websiteObj.icons[websiteObj.selectedIconIndex]" />
       <p>{{ websiteObj.title }}</p>
     </a>
     <div class="content-container" v-if="!websiteObj">
@@ -39,6 +39,25 @@
           />
         </svg></div
     ></transition>
+    <transition name="close-anim">
+      <div
+        v-if="showClose && websiteObj"
+        class="refresh"
+        @click="refresh"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            :fill="selectedGradient.start"
+            d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"
+          />
+        </svg></div
+    ></transition>
   </div>
 </template>
 
@@ -56,17 +75,17 @@ export default {
   data() {
     return {
       showClose: false,
-      tm: null,
+      closeTM: null,
     };
   },
   methods: {
     showCloseFunc() {
-      this.tm = setTimeout(() => {
+      this.closeTM = setTimeout(() => {
         this.showClose = true;
       }, 800);
     },
     preventShowCloseFunc() {
-      clearTimeout(this.tm);
+      clearTimeout(this.closeTM);
     },
     emitModal() {
       if (!this.websiteObj) {
@@ -76,6 +95,9 @@ export default {
     removeWebsite() {
       this.$emit("remove", this.websiteObj);
     },
+    refresh() {
+      this.$emit('refresh', this.websiteObj)
+    }
   },
 };
 </script>
@@ -140,6 +162,18 @@ p {
   position: absolute;
   top: -10px;
   right: -10px;
+}
+.refresh {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: -10px;
+  left: -10px;
 }
 
 .close-anim-enter-active {
