@@ -27,4 +27,8 @@ module.exports = [
     start: "#237A57",
     end: "#093028",
   },
+  {
+    start: "#41295a",
+    end: "#2F0743",
+  },
 ];

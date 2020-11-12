@@ -74,6 +74,7 @@ export default {
               return singleUrlObj.url;
             },)
           );
+          this.url= ""
         });
     },
   },

@@ -168,6 +168,7 @@ export default {
         "initialWebsites",
         JSON.stringify(this.initialWebsites)
       );
+      console.log(this.initialWebsites)
     },
   },
 };
@@ -210,7 +211,8 @@ body {
 }
 .website-module-container {
   width: 70%;
-  position: relative;
+  position: absolute;
+  top: 30%;
   left: 50%;
   transform: translateX(-50%);
   display: grid;
