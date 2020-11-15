@@ -6,7 +6,7 @@
     @mouseenter="showCloseFunc"
     @mouseleave="[(showClose = false), preventShowCloseFunc()]"
   >
-    <a :href="websiteObj.link" v-if="websiteObj" class="content-container">
+    <a draggable="true" :href="websiteObj.link" v-if="websiteObj" class="content-container">
       <img :src="websiteObj.icons[websiteObj.selectedIconIndex]" />
       <p>{{ websiteObj.title }}</p>
     </a>

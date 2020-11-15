@@ -47,11 +47,23 @@ export default {
   methods: {
     fetchIcons() {
       this.$emit("closeModal");
-      this.$emit(
-        "addWebsite",
-        "https://logo.clearbit.com/" + this.url,
-        this.url
-      );
+
+      axios
+        .get("https://logo.clearbit.com/" + this.url)
+        .then(() => {
+          this.$emit(
+            "addWebsite",
+            "https://logo.clearbit.com/" + this.url,
+            this.url
+          );
+        })
+        .catch(() => {
+          this.$emit(
+            "addWebsite",
+            "./assets/icons/global.svg",
+            this.url
+          );
+        });
       this.fetchIconsFromAPI();
     },
     fetchIconsFromAPI() {
@@ -72,9 +84,9 @@ export default {
             "addMoreIcons",
             res.data.map((singleUrlObj) => {
               return singleUrlObj.url;
-            },)
+            })
           );
-          this.url= ""
+          this.url = "";
         });
     },
   },

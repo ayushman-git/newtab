@@ -7,25 +7,32 @@
   >
     <Weather class="weather" />
     <Information class="information" />
-    <transition-group
-      name="website-anim"
-      class="website-module-container"
-      tag="div"
+    <draggable
+      v-model="initialWebsites"
+      @change="saveData"
+      v-bind="dragOptions"
     >
-      <WebsiteModule
-        v-for="(item, index) in initialWebsites"
-        :key="index"
-        :selectedGradient="selectedGradient"
-        :websiteObj="item"
-        v-on:remove="removeWebsite"
-        v-on:refresh="refresh"
-      />
-      <WebsiteModule
-        v-on:modalClicked="showModal = true"
-        :key="99"
-        :selectedGradient="selectedGradient"
-      />
-    </transition-group>
+      <transition-group
+        name="website-anim"
+        class="website-module-container"
+        tag="div"
+      >
+        <WebsiteModule
+          v-for="(item, index) in initialWebsites"
+          :key="index"
+          :selectedGradient="selectedGradient"
+          :websiteObj="item"
+          v-on:remove="removeWebsite"
+          v-on:refresh="refresh"
+        />
+          <WebsiteModule
+          class="test"
+            v-on:modalClicked="showModal = true"
+            :key="99"
+            :selectedGradient="selectedGradient"
+          />
+      </transition-group>
+    </draggable>
     <div class="color-selector-container">
       <BackgroundColor
         :selectedGradient="selectedGradient"
@@ -50,6 +57,8 @@
 </template>
 
 <script>
+import draggable from "vuedraggable";
+
 import BackgroundColor from "./components/BackgroundColor";
 import Weather from "./components/Weather";
 import Information from "./components/Information";
@@ -63,6 +72,7 @@ export default {
     Information,
     WebsiteModule,
     InputModal,
+    draggable,
   },
   created() {
     const notFirstTime = !!localStorage.getItem("gradient");
@@ -116,6 +126,15 @@ export default {
       initialWebsites: null,
     };
   },
+  computed: {
+    dragOptions() {
+      return {
+        animation: 200,
+        disabled: false,
+        ghostClass: "ghost",
+      };
+    },
+  },
   methods: {
     changeGradient(a) {
       this.selectedGradient = a;
@@ -168,7 +187,13 @@ export default {
         "initialWebsites",
         JSON.stringify(this.initialWebsites)
       );
-      console.log(this.initialWebsites)
+      console.log(this.initialWebsites);
+    },
+    saveData() {
+      localStorage.setItem(
+        "initialWebsites",
+        JSON.stringify(this.initialWebsites)
+      );
     },
   },
 };
@@ -257,5 +282,8 @@ body {
 .website-anim-leave-to {
   transform: scale(0.5);
   opacity: 0;
+}
+.test {
+  user-select: none;
 }
 </style>
