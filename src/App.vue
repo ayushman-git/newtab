@@ -10,7 +10,6 @@
     <draggable
       v-model="initialWebsites"
       @change="saveData"
-      v-bind="dragOptions"
     >
       <transition-group
         name="website-anim"
@@ -25,12 +24,11 @@
           v-on:remove="removeWebsite"
           v-on:refresh="refresh"
         />
-          <WebsiteModule
-          class="test"
-            v-on:modalClicked="showModal = true"
-            :key="99"
-            :selectedGradient="selectedGradient"
-          />
+        <WebsiteModule
+          v-on:modalClicked="showModal = true"
+          :key="99"
+          :selectedGradient="selectedGradient"
+        />
       </transition-group>
     </draggable>
     <div class="color-selector-container">
@@ -282,8 +280,5 @@ body {
 .website-anim-leave-to {
   transform: scale(0.5);
   opacity: 0;
-}
-.test {
-  user-select: none;
 }
 </style>

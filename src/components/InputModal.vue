@@ -48,22 +48,12 @@ export default {
     fetchIcons() {
       this.$emit("closeModal");
 
-      axios
-        .get("https://logo.clearbit.com/" + this.url)
-        .then(() => {
-          this.$emit(
-            "addWebsite",
-            "https://logo.clearbit.com/" + this.url,
-            this.url
-          );
-        })
-        .catch(() => {
-          this.$emit(
-            "addWebsite",
-            "./assets/icons/global.svg",
-            this.url
-          );
-        });
+      this.$emit(
+        "addWebsite",
+        "https://logo.clearbit.com/" + this.url,
+        this.url
+      );
+
       this.fetchIconsFromAPI();
     },
     fetchIconsFromAPI() {
