@@ -7,10 +7,7 @@
   >
     <Weather class="weather" />
     <Information class="information" />
-    <draggable
-      v-model="initialWebsites"
-      @change="saveData"
-    >
+    <draggable v-model="initialWebsites" @change="saveData">
       <transition-group
         name="website-anim"
         class="website-module-container"
@@ -188,6 +185,10 @@ export default {
       console.log(this.initialWebsites);
     },
     saveData() {
+      const filtered = this.initialWebsites.filter(function (el) {
+        return el != null;
+      });
+      this.initialWebsites = filtered;
       localStorage.setItem(
         "initialWebsites",
         JSON.stringify(this.initialWebsites)
