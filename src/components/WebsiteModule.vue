@@ -6,11 +6,7 @@
     @mouseenter="showCloseFunc"
     @mouseleave="[(showClose = false), preventShowCloseFunc()]"
   >
-    <a
-      :href="websiteObj.link"
-      v-if="websiteObj"
-      class="content-container"
-    >
+    <a :href="completeURL" v-if="websiteObj" class="content-container">
       <img
         @error="loadSVG"
         v-if="!showSVG"
@@ -158,6 +154,14 @@ export default {
       closeTM: null,
       showSVG: false,
     };
+  },
+  computed: {
+    completeURL() {
+      if (this.websiteObj.link.match("http") != -1) {
+        return `//${this.websiteObj.link}`;
+      }
+      return this.websiteObj.link;
+    },
   },
   methods: {
     showCloseFunc() {
