@@ -160,7 +160,7 @@ export default {
       if (this.websiteObj.link.match("http")) {
         return this.websiteObj.link;
       }
-      return `//${this.websiteObj.link}`;
+      return `https://${this.websiteObj.link}`;
     },
   },
   methods: {
