@@ -49,14 +49,14 @@ export default {
 }
 .container {
   color: white;
-  font-size: 18px;
+  font-size: 20px;
   text-align: center;
   cursor: default;
   display: inline;
 }
 
 span {
-  font-family: "Times New Roman", Times, serif;
+  font-family: "DancingScript", Times, serif;
 }
 b {
   font-family: "Times New Roman", Times, serif;

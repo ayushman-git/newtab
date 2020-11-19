@@ -207,6 +207,10 @@ export default {
   width: 100%;
   height: 100vh;
 }
+@font-face {
+  font-family: DancingScript;
+  src: url("assets/fonts/DancingScript.ttf");
+}
 .weather {
   position: fixed;
   top: 25px;
