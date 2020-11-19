@@ -157,10 +157,10 @@ export default {
   },
   computed: {
     completeURL() {
-      if (this.websiteObj.link.match("http") != -1) {
-        return `//${this.websiteObj.link}`;
+      if (this.websiteObj.link.match("http")) {
+        return this.websiteObj.link;
       }
-      return this.websiteObj.link;
+      return `//${this.websiteObj.link}`;
     },
   },
   methods: {
