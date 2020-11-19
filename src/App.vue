@@ -182,7 +182,6 @@ export default {
         "initialWebsites",
         JSON.stringify(this.initialWebsites)
       );
-      console.log(this.initialWebsites);
     },
     saveData() {
       const filtered = this.initialWebsites.filter(function (el) {

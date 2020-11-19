@@ -2,6 +2,7 @@
 node_modules
 /dist
 keys.js
+outer_app
 
 
 # local env files
