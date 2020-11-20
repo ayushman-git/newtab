@@ -36,13 +36,14 @@
       />
     </div>
     <transition name="input-anim">
+      <!-- must be v-show -->
       <InputModal
+        v-on:addMoreIcons="addMoreIcons"
         v-on:addWebsite="addWebsite"
         v-show="showModal"
         class="input-modal"
         :selectedGradient="selectedGradient"
         v-on:closeModal="showModal = false"
-        v-on:addMoreIcons="addMoreIcons"
       />
     </transition>
     <transition name="input-anim">
@@ -175,6 +176,8 @@ export default {
       );
     },
     addMoreIcons(moreIcons) {
+      console.log(this.initialWebsites)
+
       this.initialWebsites[this.initialWebsites.length - 1].icons.push(
         ...moreIcons
       );
@@ -182,6 +185,7 @@ export default {
         "initialWebsites",
         JSON.stringify(this.initialWebsites)
       );
+
     },
     saveData() {
       const filtered = this.initialWebsites.filter(function (el) {

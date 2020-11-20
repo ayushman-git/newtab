@@ -1,6 +1,12 @@
 <template>
   <div class="modal-container">
-    <strong>Enter Website URL</strong>
+    <div class="header">
+      <strong>Enter Website URL</strong>
+      <span class="delimiter">{{ randomEmoji() }}</span>
+      <transition name="error">
+        <span v-if="incorrectURL" class="error-msg">Incorrect URL</span>
+      </transition>
+    </div>
     <div class="input-set">
       <input
         v-model="url"
@@ -39,22 +45,63 @@ export default {
   data() {
     return {
       url: "",
+      incorrectURL: false,
+      emojis: [
+        "😋",
+        "😮",
+        "🤐",
+        "😪",
+        "😵",
+        "🤯",
+        "😁",
+        "🤣",
+        "😐",
+        "😶",
+        "🙄",
+        "🤗",
+        "😙",
+        "😱",
+      ],
     };
   },
   mounted() {
     this.$refs.inp.focus();
   },
+  computed: {
+    validURL() {
+      var pattern = new RegExp(
+        "^(https?:\\/\\/)?" + // protocol
+          "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+          "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+          "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+          "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+          "(\\#[-a-z\\d_]*)?$",
+        "i"
+      ); // fragment locator
+      return !!pattern.test(this.url);
+    },
+  },
   methods: {
+    randomEmoji() {
+      return this.emojis[Math.floor(Math.random() * this.emojis.length)];
+    },
     fetchIcons() {
-      this.$emit("closeModal");
+      if (this.validURL) {
+        this.$emit("closeModal");
 
-      this.$emit(
-        "addWebsite",
-        "https://logo.clearbit.com/" + this.url,
-        this.url
-      );
+        this.$emit(
+          "addWebsite",
+          "https://logo.clearbit.com/" + this.url,
+          this.url
+        );
 
-      this.fetchIconsFromAPI();
+        this.fetchIconsFromAPI();
+      } else {
+        this.incorrectURL = true;
+        setTimeout(() => {
+          this.incorrectURL = false;
+        }, 3500);
+      }
     },
     fetchIconsFromAPI() {
       axios
@@ -126,5 +173,20 @@ button:hover {
 }
 svg {
   margin-top: 7px;
+}
+.error-msg {
+  color: white;
+  font-weight: 600;
+}
+.header > * {
+  margin-right: 1em;
+}
+.error-enter-active,
+.error-leave-active {
+  transition: all 0.3s ease;
+}
+.error-enter,
+.error-leave-to {
+  opacity: 0;
 }
 </style>
