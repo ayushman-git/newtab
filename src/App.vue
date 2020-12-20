@@ -5,7 +5,7 @@
       background: `linear-gradient(180deg, ${selectedGradient.start}, ${selectedGradient.end}`,
     }"
   >
-    <Weather class="weather" />
+    <Weather class="weather" :lock="lock" />
     <Information class="information" />
     <draggable v-model="initialWebsites" @change="saveData">
       <transition-group
@@ -52,12 +52,43 @@
     <transition name="input-anim">
       <div @click="showModal = false" v-if="showModal" class="modal-bg"></div>
     </transition>
-    <Lock
-      :lock="lock"
-      class="lock"
-      :selectedGradient="selectedGradient"
-      v-on:lockStatus="lock = !lock"
-    />
+    <div class="setting-pins">
+      <transition name="setting-anim">
+        <div
+          v-if="!lock"
+          class="setting-icon"
+          @click="showUserSettings = true"
+          @mouseenter="hoverSetting = true"
+          @mouseleave="hoverSetting = false"
+        >
+          <svg
+            class="setting-icon-svg"
+            enable-background="new 0 0 24 24"
+            height="512"
+            viewBox="0 0 24 24"
+            width="512"
+            xmlns="http://www.w3.org/2000/svg"
+            :fill="hoverSetting ? 'blacke' : selectedGradient.start"
+          >
+            <path
+              d="m22.683 9.394-1.88-.239c-.155-.477-.346-.937-.569-1.374l1.161-1.495c.47-.605.415-1.459-.122-1.979l-1.575-1.575c-.525-.542-1.379-.596-1.985-.127l-1.493 1.161c-.437-.223-.897-.414-1.375-.569l-.239-1.877c-.09-.753-.729-1.32-1.486-1.32h-2.24c-.757 0-1.396.567-1.486 1.317l-.239 1.88c-.478.155-.938.345-1.375.569l-1.494-1.161c-.604-.469-1.458-.415-1.979.122l-1.575 1.574c-.542.526-.597 1.38-.127 1.986l1.161 1.494c-.224.437-.414.897-.569 1.374l-1.877.239c-.753.09-1.32.729-1.32 1.486v2.24c0 .757.567 1.396 1.317 1.486l1.88.239c.155.477.346.937.569 1.374l-1.161 1.495c-.47.605-.415 1.459.122 1.979l1.575 1.575c.526.541 1.379.595 1.985.126l1.494-1.161c.437.224.897.415 1.374.569l.239 1.876c.09.755.729 1.322 1.486 1.322h2.24c.757 0 1.396-.567 1.486-1.317l.239-1.88c.477-.155.937-.346 1.374-.569l1.495 1.161c.605.47 1.459.415 1.979-.122l1.575-1.575c.542-.526.597-1.379.127-1.985l-1.161-1.494c.224-.437.415-.897.569-1.374l1.876-.239c.753-.09 1.32-.729 1.32-1.486v-2.24c.001-.757-.566-1.396-1.316-1.486zm-10.683 7.606c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"
+            />
+          </svg>
+        </div>
+      </transition>
+
+      <Lock
+        :lock="lock"
+        :selectedGradient="selectedGradient"
+        v-on:lockStatus="lock = !lock"
+      />
+    </div>
+    <UserSettings v-if="showUserSettings" class="user-setting" />
+    <div
+      @click="showUserSettings = false"
+      v-if="showUserSettings"
+      class="back-drop"
+    ></div>
   </div>
 </template>
 
@@ -70,6 +101,7 @@ import Information from "./components/Information";
 import WebsiteModule from "./components/WebsiteModule";
 import InputModal from "./components/InputModal";
 import Lock from "./components/Lock";
+import UserSettings from "./components/UserSettings";
 export default {
   name: "App",
   components: {
@@ -80,6 +112,7 @@ export default {
     InputModal,
     draggable,
     Lock,
+    UserSettings,
   },
   created() {
     const notFirstTime = !!localStorage.getItem("gradient");
@@ -138,6 +171,8 @@ export default {
       showModal: false,
       initialWebsites: null,
       lock: false,
+      showUserSettings: false,
+      hoverSetting: false,
     };
   },
   computed: {
@@ -271,6 +306,7 @@ body {
   display: grid;
   grid-gap: 1em;
   grid-template-columns: repeat(auto-fit, minmax(120px, 160px));
+  justify-content: center;
 }
 .website-add {
   width: 50px;
@@ -322,9 +358,67 @@ body {
   opacity: 0;
 }
 
-.lock {
+.setting-anim-enter-active,
+.setting-anim-leave-active {
+  transition: all 0.2s ease;
+}
+.setting-anim-enter,
+.setting-anim-leave-to {
+  transform: translateY(50px);
+  z-index: -1;
+  opacity: 0;
+}
+
+.setting-pins {
   position: fixed;
   bottom: 30px;
   right: 30px;
+  display: flex;
+  flex-flow: column;
+}
+.setting-pins > * {
+  margin-top: 1.4em;
+}
+.setting-icon {
+  display: flex;
+  width: 40px;
+  height: 40px;
+  background-color: rgb(218, 218, 218);
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+.setting-icon:hover {
+  box-shadow: 0 0px 2.2px rgba(0, 0, 0, 0.042), 0 0px 5.3px rgba(0, 0, 0, 0.059),
+    0 0px 9.9px rgba(0, 0, 0, 0.071), 0 0px 17.6px rgba(0, 0, 0, 0.083),
+    0 0px 33px rgba(0, 0, 0, 0.1), 0 0px 79px rgba(0, 0, 0, 0.14);
+  background-color: rgb(255, 255, 255);
+}
+
+.setting-icon-svg {
+  width: 20px;
+  transition: all 0.2s ease-in-out;
+}
+.user-setting {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 1000px;
+  height: 80vh;
+  z-index: 10;
+}
+.back-drop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 5;
 }
 </style>

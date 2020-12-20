@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="weather-container"
-    @click="changeMetric"
-    v-if="weatherData"
-  >
+  <div class="weather-container" @click="changeMetric" v-if="weatherData">
     <transition name="slide-fade">
       <p v-if="showMetric">{{ Math.round(weatherData.main.temp - 273) }}° c</p>
     </transition>
@@ -18,10 +14,15 @@
 </template>
 
 <script>
-import key from "../../keys"
+import key from "../../keys";
 import axios from "axios";
 export default {
   name: "Weather",
+  props: {
+    lock: {
+      type: Boolean,
+    },
+  },
   data() {
     return {
       weatherData: null,
@@ -29,7 +30,7 @@ export default {
     };
   },
   created() {
-    const notFirstTime = !!(localStorage.getItem("metric"));
+    const notFirstTime = !!localStorage.getItem("metric");
     if (notFirstTime) {
       this.showMetric = JSON.parse(localStorage.getItem("metric"));
     } else {
@@ -50,8 +51,9 @@ export default {
       });
     },
     changeMetric() {
-      this.showMetric = !this.showMetric
-      localStorage.setItem("metric", this.showMetric)
+      if (this.lock) return;
+      this.showMetric = !this.showMetric;
+      localStorage.setItem("metric", this.showMetric);
     },
   },
 };
@@ -81,7 +83,7 @@ export default {
   margin: 0em 1em 0em 0em;
 }
 
-.slide-fade-enter-active{
+.slide-fade-enter-active {
   transition: all 0.3s ease;
 }
 .slide-fade-enter,
@@ -89,5 +91,4 @@ export default {
   transform: translateX(-10px);
   opacity: 0;
 }
-
 </style>
