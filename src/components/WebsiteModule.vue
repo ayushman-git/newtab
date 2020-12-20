@@ -104,7 +104,7 @@
         />
       </svg>
     </div>
-    <transition name="close-anim">
+    <transition name="close-anim" v-if="!lock">
       <div @click="removeWebsite" v-if="showClose && websiteObj" class="close">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +119,7 @@
           />
         </svg></div
     ></transition>
-    <transition name="close-anim">
+    <transition name="close-anim" v-if="!lock">
       <div v-if="showClose && websiteObj" class="refresh" @click="refresh">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -147,6 +147,9 @@ export default {
     selectedGradient: {
       type: Object,
     },
+    lock: {
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -167,7 +170,7 @@ export default {
     showCloseFunc() {
       this.closeTM = setTimeout(() => {
         this.showClose = true;
-      }, 800);
+      }, 200);
     },
     preventShowCloseFunc() {
       clearTimeout(this.closeTM);

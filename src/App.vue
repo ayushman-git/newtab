@@ -20,6 +20,7 @@
           :websiteObj="item"
           v-on:remove="removeWebsite"
           v-on:refresh="refresh"
+          :lock="lock"
         />
         <WebsiteModule
           v-on:modalClicked="showModal = true"
@@ -28,13 +29,15 @@
         />
       </transition-group>
     </draggable>
-    <div class="color-selector-container">
-      <BackgroundColor
-        :selectedGradient="selectedGradient"
-        v-on:selectcolor="changeGradient"
-        class="color-selector"
-      />
-    </div>
+    <transition name="bg-selector">
+      <div class="color-selector-container" v-if="!lock">
+        <BackgroundColor
+          :selectedGradient="selectedGradient"
+          v-on:selectcolor="changeGradient"
+          class="color-selector"
+        />
+      </div>
+    </transition>
     <transition name="input-anim">
       <!-- must be v-show -->
       <InputModal
@@ -49,6 +52,12 @@
     <transition name="input-anim">
       <div @click="showModal = false" v-if="showModal" class="modal-bg"></div>
     </transition>
+    <Lock
+      :lock="lock"
+      class="lock"
+      :selectedGradient="selectedGradient"
+      v-on:lockStatus="lock = !lock"
+    />
   </div>
 </template>
 
@@ -60,6 +69,7 @@ import Weather from "./components/Weather";
 import Information from "./components/Information";
 import WebsiteModule from "./components/WebsiteModule";
 import InputModal from "./components/InputModal";
+import Lock from "./components/Lock";
 export default {
   name: "App",
   components: {
@@ -69,10 +79,12 @@ export default {
     WebsiteModule,
     InputModal,
     draggable,
+    Lock,
   },
   created() {
     const notFirstTime = !!localStorage.getItem("gradient");
     const notFirstTimeWebsite = !!localStorage.getItem("initialWebsites");
+    const notFirstTimeLock = !!localStorage.getItem("lock");
     if (notFirstTime) {
       this.selectedGradient = JSON.parse(localStorage.getItem("gradient"));
     } else {
@@ -80,6 +92,11 @@ export default {
         start: "#222222",
         end: "#000000",
       };
+    }
+    if (notFirstTimeLock) {
+      this.lock = JSON.parse(localStorage.getItem("lock"));
+    } else {
+      this.lock = false;
     }
     if (notFirstTimeWebsite) {
       this.initialWebsites = JSON.parse(
@@ -120,6 +137,7 @@ export default {
       selectedGradient: null,
       showModal: false,
       initialWebsites: null,
+      lock: false,
     };
   },
   computed: {
@@ -176,7 +194,7 @@ export default {
       );
     },
     addMoreIcons(moreIcons) {
-      console.log(this.initialWebsites)
+      console.log(this.initialWebsites);
 
       this.initialWebsites[this.initialWebsites.length - 1].icons.push(
         ...moreIcons
@@ -185,7 +203,6 @@ export default {
         "initialWebsites",
         JSON.stringify(this.initialWebsites)
       );
-
     },
     saveData() {
       const filtered = this.initialWebsites.filter(function (el) {
@@ -196,6 +213,11 @@ export default {
         "initialWebsites",
         JSON.stringify(this.initialWebsites)
       );
+    },
+  },
+  watch: {
+    lock: function () {
+      localStorage.setItem("lock", this.lock);
     },
   },
 };
@@ -288,5 +310,21 @@ body {
 .website-anim-leave-to {
   transform: scale(0.5);
   opacity: 0;
+}
+
+.bg-selector-enter-active,
+.bg-selector-leave-active {
+  transition: all 0.4s ease;
+}
+.bg-selector-enter,
+.bg-selector-leave-to {
+  transform: translateY(50px);
+  opacity: 0;
+}
+
+.lock {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
 }
 </style>
