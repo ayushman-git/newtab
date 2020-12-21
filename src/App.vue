@@ -20,12 +20,14 @@
           :websiteObj="item"
           v-on:remove="removeWebsite"
           v-on:refresh="refresh"
+          :tabBorderRadius="tabBorderRadius"
           :lock="lock"
         />
         <WebsiteModule
           v-on:modalClicked="showModal = true"
           :key="99"
           :selectedGradient="selectedGradient"
+          :tabBorderRadius="tabBorderRadius"
         />
       </transition-group>
     </draggable>
@@ -53,7 +55,7 @@
       <div @click="showModal = false" v-if="showModal" class="modal-bg"></div>
     </transition>
     <div class="setting-pins">
-      <transition name="setting-anim">
+      <!-- <transition name="setting-anim">
         <div
           v-if="!lock"
           class="setting-icon"
@@ -75,7 +77,7 @@
             />
           </svg>
         </div>
-      </transition>
+      </transition> -->
 
       <Lock
         :lock="lock"
@@ -173,6 +175,7 @@ export default {
       lock: false,
       showUserSettings: false,
       hoverSetting: false,
+      tabBorderRadius: 20,
     };
   },
   computed: {
@@ -276,10 +279,12 @@ export default {
   position: fixed;
   top: 25px;
   left: 25px;
+  user-select: none;
 }
 .information {
   margin: 0 auto;
   padding: 20vh 1em 4em 1em;
+  user-select: none;
 }
 body {
   margin: 0;

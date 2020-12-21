@@ -49,7 +49,7 @@ export default {
 }
 .container {
   color: white;
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
   cursor: default;
   display: inline;

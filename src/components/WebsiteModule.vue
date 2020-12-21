@@ -2,7 +2,7 @@
   <div
     @click="emitModal"
     class="website-container"
-    :style="[!websiteObj ? { 'align-items': 'center' } : {}]"
+    :style="[!websiteObj ? { 'align-items': 'center' } : {}, {'border-radius': tabBorderRadius + 'px'}]"
     @mouseenter="showCloseFunc"
     @mouseleave="[(showClose = false), preventShowCloseFunc()]"
   >
@@ -150,6 +150,9 @@ export default {
     lock: {
       type: Boolean,
     },
+    tabBorderRadius: {
+      type: Number,
+    },
   },
   data() {
     return {
@@ -206,7 +209,6 @@ a:active {
   display: block;
 }
 .content-container {
-  width: 100%;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -220,13 +222,14 @@ a:active {
   display: flex;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
   cursor: pointer;
   transition: 0.2s all cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 .website-container:hover {
   background-color: rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0 0px 0.7px rgba(0, 0, 0, 0.077), 0 0px 1.7px rgba(0, 0, 0, 0.095),
+    0 0px 3.1px rgba(0, 0, 0, 0.096), 0 0px 5.6px rgba(0, 0, 0, 0.093),
+    0 0px 10.4px rgba(0, 0, 0, 0.099), 0 0px 25px rgba(0, 0, 0, 0.2);
 }
 .website-container:hover img {
   transform: scale(1.05);
